@@ -1,42 +1,29 @@
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# creating 1st iteration of the docker image  for currencyservice
+# use official node.js base image 
+FROM node:18
 
-FROM --platform=$BUILDPLATFORM node:20.18.1-alpine@sha256:24fb6aa7020d9a20b00d6da6d1714187c45ed00d1eb4adb01395843c338b9372 AS builder
+# set up the working directory , where the app code will be copied and run , this dir act as a container
 
-# Some packages (e.g. @google-cloud/profiler) require additional
-# deps for post-install scripts
-RUN apk add --update --no-cache \
-    python3 \
-    make \
-    g++
+WORKDIR /app 
 
-WORKDIR /usr/src/app
+# copy the package.json files
+# if you don't copy the package.json files, your app doesn't know which dependencies/libralies to install
+# when we add package.json file , npm install will take this file and install and downlaid node modules , thats where dependencies are listed under /app file
 
-COPY package*.json ./
+COPY package*.json ./ 
 
-RUN npm install --only=production
+#install npm install for dowloading and installing dependencies as a node module based on package.json file
 
-FROM alpine:3.20.3@sha256:1e42bbe2508154c9126d48c2b8a75420c3544343bf86fd041fb7527e017a4b4a
+RUN npm install 
 
-RUN apk add --no-cache nodejs
+# after installing dep, libraies we have now our app code to be copied into the working directory we created that is /app
 
-WORKDIR /usr/src/app
+COPY . . 
 
-COPY --from=builder /usr/src/app/node_modules ./node_modules
-
-COPY . .
+# we need to expose the port on which the app will run inside the container
 
 EXPOSE 7000
 
-ENTRYPOINT [ "node", "server.js" ]
+# now we need to run the app , for that we need to execute one command that is node service.js, this means it will start the server.js file and app will start running
+
+CMD ["node", "server.js"]
