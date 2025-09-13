@@ -1,6 +1,6 @@
 # 1st version of docker file ,next 2nd
 # creating 1st iteration of the docker image  for currencyservice
-# use official node.js base image which include linux OS machine
+# use official node.js base image which include linux OS machine, nodejs runtime env
 FROM node:18
 
 # set up the working directory , where the app code will be copied and run , this dir act as a container
