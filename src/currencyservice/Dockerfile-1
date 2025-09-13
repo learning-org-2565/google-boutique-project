@@ -1,4 +1,4 @@
-# 1st version of docker file
+# 1st version of docker file ,next 2nd
 # creating 1st iteration of the docker image  for currencyservice
 # use official node.js base image 
 FROM node:18
