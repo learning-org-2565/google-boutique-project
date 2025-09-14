@@ -1,12 +1,11 @@
-name: 1. Basic CI pipeline
+name: 1-Basic CI pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main 
+    branches: [ main ]
+ 
   
   jobs:
     build-currency-service:
