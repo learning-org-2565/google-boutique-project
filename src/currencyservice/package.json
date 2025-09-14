@@ -4,7 +4,8 @@
   "description": "A gRPC currency conversion microservice",
   "repository": "https://github.com/GoogleCloudPlatform/microservices-demo",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "unit-test": "jest"
   },
   "license": "Apache-2.0",
   "dependencies": {
