@@ -24,16 +24,16 @@ jobs:
       
       - name: Install dependencies 
         run: |
-        cd src/currencyservice
-        npm ci
+          cd src/currencyservice
+          npm ci
       - name: Run tests to check everything is working fine
         run: |
-        cd src/currencyservice
-        npm test
+          cd src/currencyservice
+          npm test
       - name: Run the unit test to check if the code has no errors 
         run: |
-        cd src/currencyservice
-        npm run unit-test 
+          cd src/currencyservice
+          npm run unit-test 
           
       
       # - name: setup the docker buildx
