@@ -18,4 +18,11 @@ jobs:
         uses: actions/setup-node@v4 
         with:
           node-version: '18'
+
+      - name: Print the info about currency service
+        run: |
+          echo "Building Currency Service"
+          ls -la src/currencyservice/
+          echo "Contents of the package.json file:"
+          cat src/currencyservice/package.json      
         
