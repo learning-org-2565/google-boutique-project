@@ -8,7 +8,7 @@ on:
 jobs:
   build-currecy-service:
     runs-on: ubuntu-latest
-    steps:
+    steps: #steps means tasks to do
       - name: Checkout the code
         uses: actions/checkout@v4
       - name: Setup Node.js 
