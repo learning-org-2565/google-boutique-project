@@ -25,5 +25,6 @@ jobs:
           ls -la src/currencyservice/
           echo "Contents of the package.json file:"
           cat src/currencyservice/package.json
-          ls -lrt src/currencyservice/     
+          ls -lrt src/
+          cat src/currencyservice/Dockerfile
         
