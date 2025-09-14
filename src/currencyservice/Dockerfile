@@ -1,27 +1,34 @@
-# this is 3rd iteration for currecysercvice fof docker file for env variables
+# this is the 4th iteration of the docker file which is going to focus on security aspect of the docker image
 
-FROM node:18
+# we are going to use base image to reduce the time and make the readymade image
 
+FROM  node:18
+
+# create the working dir on top of that we will execute the source code 
 WORKDIR /app
 
+# now we will copy the package.json file to install and dependencies 
 COPY package*.json ./
 
-RUN npm install 
+# now install the npm to download the dependencies like node modules
+RUN npm install
+
+# now copy the source code to the working dir
 
 COPY . . 
 
-#setup the env variables , why do we need this , because when we deploy this app on kubernetes cluster we will be using configmap to pass the env variables to the container
-# we are setting default value for the env variable , if we don't pass any value from configmap it will take this default value
+# we need to change the rootuser to non root user for security purposes
+RUN chown -R  node:node /app
 
 ENV PORT=7000
-ENV NODE-ENV=DEVELOPMENT
-ENV DISABLE_PROFILER=1
 
+# We need to switch to the non root user
+USER node
+
+# we need to expose the port
 EXPOSE $PORT
 
-# Add health check to monitor container health
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD node -e "console.log('Health check passed')" || exit 1
-
-# Command to run the application
+# NOW THE final step CMD commmand to run the app
 CMD ["node", "server.js"]
+
+# This image size is currencyservice-currencyservice  latest 7634dec7b671  1.3GB
