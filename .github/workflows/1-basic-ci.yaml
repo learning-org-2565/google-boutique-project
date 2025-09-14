@@ -1,32 +1,32 @@
-name: 1-Basic CI pipeline
+# name: 1-Basic CI pipeline
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+# on:
+#   push:
+#     branches: [ main ]
+#   pull_request:
+#     branches: [ main ]
  
   
-jobs:
-  build-currency-service:
-    runs-on: ubuntu-latest
+# jobs:
+#   build-currency-service:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout the code
-        uses: actions/checkout@v4
-      - name: Setup Node.jobs
-        uses: actions/setup-node@v4 
-        with:
-          node-version: '18'
+#     steps:
+#       - name: Checkout the code
+#         uses: actions/checkout@v4
+#       - name: Setup Node.jobs
+#         uses: actions/setup-node@v4 
+#         with:
+#           node-version: '18'
 
-      - name: Print the info about currency service
-        run: |
-          echo "Building Currency Service"
-          ls -la src/currencyservice/
-          echo "Contents of the package.json file:"
-          cat src/currencyservice/package.json
-          ls -lrt src/currencyservice/
-          echo "Contents of the Dockerfile:"
-          cat src/currencyservice/Dockerfile
-          ls -lrt
+#       - name: Print the info about currency service
+#         run: |
+#           echo "Building Currency Service"
+#           ls -la src/currencyservice/
+#           echo "Contents of the package.json file:"
+#           cat src/currencyservice/package.json
+#           ls -lrt src/currencyservice/
+#           echo "Contents of the Dockerfile:"
+#           cat src/currencyservice/Dockerfile
+#           ls -lrt
         
