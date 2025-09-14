@@ -24,5 +24,6 @@ jobs:
           echo "Building Currency Service"
           ls -la src/currencyservice/
           echo "Contents of the package.json file:"
-          cat src/currencyservice/package.json      
+          cat src/currencyservice/package.json
+          ls -lrt src/currencyservice/     
         
