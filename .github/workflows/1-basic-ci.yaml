@@ -7,11 +7,11 @@ on:
     branches: [ main ]
  
   
-  jobs:
-    build-currency-service:
-      runs-on: ubuntu-latest
+jobs:
+  build-currency-service:
+    runs-on: ubuntu-latest
 
-      steps:
-        - name: Checkout the code
-          uses: actions/checkout@v4
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
       
