@@ -28,4 +28,5 @@ jobs:
           ls -lrt src/currencyservice/
           echo "Contents of the Dockerfile:"
           cat src/currencyservice/Dockerfile
+          ls -lrt
         
