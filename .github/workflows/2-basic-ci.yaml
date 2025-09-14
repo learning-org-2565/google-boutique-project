@@ -21,6 +21,19 @@ jobs:
           ls -lrta src/currencyservice
           echo "show me the content of package.json file"
           cat src/currencyservice/package.json
+      
+      - name: Install dependencies 
+        run: |
+        cd src/currencyservice
+        npm ci
+      - name: Run tests to check everything is working fine
+        run: |
+        cd src/currencyservice
+        npm test
+      - name: Run the unit test to check if the code has no errors 
+        run: |
+        cd src/currencyservice
+        npm run unit-test 
           
       
       # - name: setup the docker buildx
