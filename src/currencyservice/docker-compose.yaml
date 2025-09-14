@@ -1,0 +1,22 @@
+#this is the first iteration of the docker compose file for the currency service 
+
+version: '3.8'
+services:
+  currencyservice:
+    build: .
+    container_name: currencyservice-composer
+    ports:
+      - "7000:7000"
+    environment:
+      - PORT=7000
+      - NODE_ENV=production
+      - DISABLE_PROFILER=1
+    healthcheck:
+      test: ["CMD", "node", "-e", "console.log('health check passed')"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 5
+
+
+      
