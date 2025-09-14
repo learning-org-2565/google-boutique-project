@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies 
         run: |
           cd src/currencyservice
-          npm ci
+          npm install
       - name: Run tests to check everything is working fine
         run: |
           cd src/currencyservice
