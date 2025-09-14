@@ -23,21 +23,26 @@ jobs:
           cat src/currencyservice/package.json
           
       
-      - name: setup the docker buildx
-        uses: docker/setup-buildx-action@v3
+      # - name: setup the docker buildx
+      #   uses: docker/setup-buildx-action@v3
 
-      - name: logs in to the GitHub Container Registry
-        uses: docker/login-action@v3
-        with: 
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      # - name: logs in to the GitHub Container Registry
+      #   uses: docker/login-action@v3
+      #   with: 
+      #     username: ${{ secrets.DOCKER_HUB_USERNAME }}
+      #     password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Build and Push the Docker image to GHCR
-        uses: docker/build-push-action@v4
-        with:
-          context: ./src/currencyservice
-          file: ./src/currencyservice/Dockerfile
-          push: true
-          tags: |
-            ghcr.io/${{ github.repository_owner }}/currencyservice:${{ github.sha }}
-            ghcr.io/${{ github.repository_owner }}/currencyservice:latest
+      - name: Login to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
+      - name: Build Docker Image
+        run: |
+          cd src/currencyservice
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/currencyservice:latest .
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/currencyservice:${{ github.sha }} .
+
+      - name: Push Docker Image
+        run: |
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/currencyservice:latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/currencyservice:${{ github.sha }}
