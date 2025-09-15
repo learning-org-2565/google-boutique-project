@@ -1,34 +1,56 @@
-# this is the 4th iteration of the docker file which is going to focus on security aspect of the docker image
+# now we need to buildd the docker file for currecyservice using multi stage docker file
+# this is the 5th iteration of the docker file which is going to focus  on reducing the image size using multi stage docker file
 
-# we are going to use base image to reduce the time and make the readymade image
+FROM node:18 AS builder
 
-FROM  node:18
-
-# create the working dir on top of that we will execute the source code 
+# NOW we need to create working dir ,to store the source code 
 WORKDIR /app
 
-# now we will copy the package.json file to install and dependencies 
+# now we will copy the package.json file to install dependencies
 COPY package*.json ./
 
-# now install the npm to download the dependencies like node modules
-RUN npm install
+# now install the npm to download the dependecies like node modules
+RUN npm install 
 
-# now copy the source code to the working dir
+# Now we need to copy the source code of the app and pest in the working dir
+COPY . .
 
-COPY . . 
 
-# we need to change the rootuser to non root user for security purposes
-RUN chown -R  node:node /app
+# stage 2 as production image
+FROM  node:18-slim AS production
 
+# now we need to create the non-root user for security purposes
+RUN groupadd -r nodeuser && useradd -r -g nodeuser nodeuser
+
+# SETUP  the work dir
+WORKDIR /app
+
+#copy the package.json
+COPY package*.json ./
+
+# now we need to install the npm 
+RUN npm install --only=production && npm cache clean --force
+
+# Copy the built application from the builder stage
+COPY --from=builder /app .
+
+# now we need to change the root user to non root user for security purposes
+RUN chown -R nodeuser:nodeuser /app
+
+# Set environment variables
 ENV PORT=7000
+ENV NODE_ENV=production 
+ENV DISABLE_PROFILER=1
 
-# We need to switch to the non root user
-USER node
+# now we need to switch to the non root user
+USER nodeuser
 
 # we need to expose the port
 EXPOSE $PORT
 
-# NOW THE final step CMD commmand to run the app
-CMD ["node", "server.js"]
+# Add health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD node -e "console.log('Health check passed')" || exit 1
 
-# This image size is currencyservice-currencyservice  latest 7634dec7b671  1.3GB
+# Command to run the application
+CMD ["node", "server.js"]

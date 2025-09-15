@@ -50,7 +50,7 @@ jobs:
       - name: Login to Docker Hub
         run: |
           echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-
+    # need to understand how this login works and how it is taking passwords 
       - name: Build Docker Image
         run: |
           cd src/currencyservice
