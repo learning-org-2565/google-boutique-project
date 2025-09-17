@@ -1,56 +1,48 @@
-# now we need to buildd the docker file for currecyservice using multi stage docker file
-# this is the 5th iteration of the docker file which is going to focus  on reducing the image size using multi stage docker file
+# Multi-stage Docker build with ARG variables
+# ARG is used to pass values at build time, once created it cannot be changed
 
-FROM node:18 AS builder
+ARG NODE_VERSION=18
+ARG APP_USER=node
+ARG APP_GROUP=node
+ARG APP_PORT=7000
 
-# NOW we need to create working dir ,to store the source code 
+# First stage: Builder
+FROM node:${NODE_VERSION} AS builder
 WORKDIR /app
-
-# now we will copy the package.json file to install dependencies
 COPY package*.json ./
+RUN npm install
+COPY . . 
 
-# now install the npm to download the dependecies like node modules
-RUN npm install 
+# Second stage: Production
+FROM node:${NODE_VERSION}-slim AS production
 
-# Now we need to copy the source code of the app and pest in the working dir
-COPY . .
+# Re-declare ARG variables for this stage
+ARG APP_USER=node
+ARG APP_GROUP=node
+ARG APP_PORT=7000
 
+# NOTE: No need to create node user/group - they already exist in the base image!
 
-# stage 2 as production image
-FROM  node:18-slim AS production
-
-# now we need to create the non-root user for security purposes
-RUN groupadd -r nodeuser && useradd -r -g nodeuser nodeuser
-
-# SETUP  the work dir
-WORKDIR /app
-
-#copy the package.json
+# Setup working directory
+WORKDIR /app 
 COPY package*.json ./
-
-# now we need to install the npm 
 RUN npm install --only=production && npm cache clean --force
-
-# Copy the built application from the builder stage
 COPY --from=builder /app .
+RUN chown -R ${APP_USER}:${APP_GROUP} /app
 
-# now we need to change the root user to non root user for security purposes
-RUN chown -R nodeuser:nodeuser /app
-
-# Set environment variables
-ENV PORT=7000
-ENV NODE_ENV=production 
+# Set up environment variables
+ENV PORT=${APP_PORT}
+ENV NODE_ENV=production
 ENV DISABLE_PROFILER=1
 
-# now we need to switch to the non root user
-USER nodeuser
+# Switch to the non-root user
+USER ${APP_USER}
 
-# we need to expose the port
-EXPOSE $PORT
+EXPOSE ${APP_PORT}
 
-# Add health check
+# Adding health checks
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD node -e "console.log('Health check passed')" || exit 1
 
-# Command to run the application
+# Command to start the app
 CMD ["node", "server.js"]
