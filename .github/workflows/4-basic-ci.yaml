@@ -49,6 +49,13 @@ jobs:
           echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
           cd src/${{ env.SERVICE_NAME }}
           docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.SERVICE_NAME }}:latest .
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+
+      - name: Push Docker Image
+        run: |
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/currencyservice:latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/currencyservice:${{ github.sha }}
+
+         
+          
 
     
