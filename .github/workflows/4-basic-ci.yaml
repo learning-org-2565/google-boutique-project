@@ -30,7 +30,7 @@ jobs:
         run: |
           echo "Service: ${{env.SERVICE_NAME}}"
           echo "Node-version: ${{env.NODE_SERVICE}}"
-          echo "Image: ${{env.IMAGE_NAME}}""
+          echo "Image: ${{env.IMAGE_NAME}}"
           echo "Branch: ${{github.ref_name}}"
           echo "Github Owner: ${{github.Owner}}"
 
