@@ -1,63 +1,63 @@
-name: 2-basic CI pipeline-docker image-GHCR
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-# job means machine
-jobs:
-  build-currecy-service:
-    runs-on: ubuntu-latest
-    steps: #steps means tasks to do
-      - name: Checkout the code
-        uses: actions/checkout@v4
-      - name: Setup Node.js 
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-      - name: Print the info about currency service
-        run: |
-          echo "We are building the first microservice - currencyservice"
-          ls -lrta src/currencyservice
-          echo "show me the content of package.json file"
-          cat src/currencyservice/package.json
+# name: 2-basic CI pipeline-docker image-GHCR
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches: [main]
+# # job means machine
+# jobs:
+#   build-currecy-service:
+#     runs-on: ubuntu-latest
+#     steps: #steps means tasks to do
+#       - name: Checkout the code
+#         uses: actions/checkout@v4
+#       - name: Setup Node.js 
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: '18'
+#       - name: Print the info about currency service
+#         run: |
+#           echo "We are building the first microservice - currencyservice"
+#           ls -lrta src/currencyservice
+#           echo "show me the content of package.json file"
+#           cat src/currencyservice/package.json
       
-      - name: Install dependencies 
-        run: |
-          cd src/currencyservice
-          npm install
-          npm install --save-dev jest
+#       - name: Install dependencies 
+#         run: |
+#           cd src/currencyservice
+#           npm install
+#           npm install --save-dev jest
 
-      - name: Run tests to check everything is working fine
-        run: |
-          cd src/currencyservice
-          npm test
-      - name: Run the unit test to check if the code has no errors 
-        run: |
-          cd src/currencyservice
-          npm run unit-test 
+#       - name: Run tests to check everything is working fine
+#         run: |
+#           cd src/currencyservice
+#           npm test
+#       - name: Run the unit test to check if the code has no errors 
+#         run: |
+#           cd src/currencyservice
+#           npm run unit-test 
           
       
-      # - name: setup the docker buildx
-      #   uses: docker/setup-buildx-action@v3
+#       # - name: setup the docker buildx
+#       #   uses: docker/setup-buildx-action@v3
 
-      # - name: logs in to the GitHub Container Registry
-      #   uses: docker/login-action@v3
-      #   with: 
-      #     username: ${{ secrets.DOCKER_HUB_USERNAME }}
-      #     password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+#       # - name: logs in to the GitHub Container Registry
+#       #   uses: docker/login-action@v3
+#       #   with: 
+#       #     username: ${{ secrets.DOCKER_HUB_USERNAME }}
+#       #     password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Login to Docker Hub
-        run: |
-          echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-    # need to understand how this login works and how it is taking passwords 
-      - name: Build Docker Image
-        run: |
-          cd src/currencyservice
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/currencyservice:latest .
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/currencyservice:${{ github.sha }} .
+#       - name: Login to Docker Hub
+#         run: |
+#           echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+#     # need to understand how this login works and how it is taking passwords 
+#       - name: Build Docker Image
+#         run: |
+#           cd src/currencyservice
+#           docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/currencyservice:latest .
+#           docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/currencyservice:${{ github.sha }} .
 
-      - name: Push Docker Image
-        run: |
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/currencyservice:latest
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/currencyservice:${{ github.sha }}
+#       - name: Push Docker Image
+#         run: |
+#           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/currencyservice:latest
+#           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/currencyservice:${{ github.sha }}

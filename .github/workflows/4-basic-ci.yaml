@@ -1,0 +1,37 @@
+# Now we are going to create new 4th iteration of CI pipeline which will focus on env varaibles
+# 4th basic
+name: 4-basic-ci-pipeline-env
+
+env:
+  SERVICE_NAME: currencyservice
+  NODE_SERVICE: '18'
+
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+
+jobs:
+  build_service:
+    runs_on: ubuntu-latest
+
+    env:
+      IMAGE_NAME: ${{ secret.DOCKER_USERNAME}}/${{env.SERVICE_NAME}}
+
+    steps:
+      - name: Checkout the code 
+        uses: actions/checkout@v4
+        with:
+          node-version: ${{env.NODE_SERVICE}}
+      - name: Print Info
+        run: |
+          echo "Service: ${{env.SERVICE_NAME}}"
+          echo "Node-version: ${{env.NODE_SERVICE}}"
+          echo "Image: ${{env.IMAGE_NAME}}
+          echo "Branch: ${{github.ref_name}}"
+          echo "Github Owner: ${{github.Owner}}"
+
+    
