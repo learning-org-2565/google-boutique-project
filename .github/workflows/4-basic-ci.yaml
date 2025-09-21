@@ -9,7 +9,7 @@ on:
     branches: [main]
 
 env:
-  SERVICE_NAME: currencyservice
+  SERVICE_NAME: "currencyservice"
   NODE_SERVICE: '18'
 
 
