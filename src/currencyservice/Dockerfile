@@ -27,6 +27,11 @@ COPY . .
 # Now we will create 2nd stage of  the docker file
 FROM node:${NODE_VERSION}-slim AS production
 
+ARG NODE_VERSION=18
+ARG APP_USER=node
+ARG APP_GROUP=node
+ARG APP_PORT=7000
+
 LABEL stage="production"
 LABEL build.stage="final"
 LABEL org.opencontainers.image.source="https://github.com/your/repo"
