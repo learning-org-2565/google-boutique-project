@@ -15,7 +15,8 @@ env:
 
 jobs:
   build_service:
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
+
 
     env:
       IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.SERVICE_NAME }}
