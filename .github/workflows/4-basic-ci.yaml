@@ -11,17 +11,13 @@ on:
 env:
   SERVICE_NAME: "currencyservice"
   NODE_SERVICE: '18'
-  IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.SERVICE_NAME }}
+ 
 
 
 jobs:
   build_service:
     runs-on: ubuntu-latest
     
-
-
-    # env:
-    #   IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.SERVICE_NAME }}
 
     steps:
       - name: Checkout the code 
@@ -51,7 +47,7 @@ jobs:
         run: |
           echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
           cd src/${{ env.SERVICE_NAME }}
-          docker build -t ${{ env.IMAGE_NAME }}:latest .
-          docker push ${{ env.IMAGE_NAME }}:latest
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.SERVICE_NAME }}:latest .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
 
     
