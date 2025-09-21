@@ -2,16 +2,15 @@
 # 4th basic
 name: 4-basic-ci-pipeline-env
 
-env:
-  SERVICE_NAME: currencyservice
-  NODE_SERVICE: '18'
-
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
+env:
+  SERVICE_NAME: currencyservice
+  NODE_SERVICE: '18'
 
 
 jobs:
