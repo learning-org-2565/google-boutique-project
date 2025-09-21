@@ -11,13 +11,13 @@ on:
 env:
   SERVICE_NAME: "currencyservice"
   NODE_SERVICE: '18'
+  IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.SERVICE_NAME }}
 
 
 jobs:
   build_service:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.SERVICE_NAME }}
+    
 
 
     # env:
