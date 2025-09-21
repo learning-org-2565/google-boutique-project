@@ -53,7 +53,7 @@ jobs:
 
       - name: Push Docker Image
         run: |
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/currencyservice:latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.SERVICE_NAME }}:latest
          
 
          
