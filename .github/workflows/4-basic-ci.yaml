@@ -36,6 +36,7 @@ jobs:
         run: |
           cd src/${{ env.SERVICE_NAME }}
           npm install
+          npm install --save-dev jest
       
       - name: Run tests
         run: |
