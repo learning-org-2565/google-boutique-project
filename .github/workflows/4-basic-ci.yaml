@@ -19,7 +19,7 @@ jobs:
     runs_on: ubuntu-latest
 
     env:
-      IMAGE_NAME: ${{ secret.DOCKER_USERNAME}}/${{env.SERVICE_NAME}}
+      IMAGE_NAME: ${{ secret.DOCKER_HUB_USERNAME}}/${{env.SERVICE_NAME}}
 
     steps:
       - name: Checkout the code 
