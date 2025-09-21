@@ -35,7 +35,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd src/${{ env.SERVICE_NAME }}
-          npm ci
+          npm install
       
       - name: Run tests
         run: |
