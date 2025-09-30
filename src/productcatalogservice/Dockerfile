@@ -1,5 +1,6 @@
 # 1st iteration of Dcokerfile for the productcatalogservice
 # this is written with Go language so we need to build dockerfile for GO language
+# this is just first iteration of docker file 
 
 FROM golang:1.23-alpine
 

@@ -1,59 +1,59 @@
-# Now we are going to create new 4th iteration of CI pipeline which will focus on env varaibles
-# 4th basic
-name: 4-basic-ci-pipeline-env
+# # Now we are going to create new 4th iteration of CI pipeline which will focus on env varaibles
+# # 4th basic
+# name: 4-basic-ci-pipeline-env
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches: [main]
 
-env:
-  SERVICE_NAME: "currencyservice"
-  NODE_SERVICE: '18'
+# env:
+#   SERVICE_NAME: "currencyservice"
+#   NODE_SERVICE: '18'
  
 
 
-jobs:
-  build_service:
-    runs-on: ubuntu-latest
+# jobs:
+#   build_service:
+#     runs-on: ubuntu-latest
     
 
-    steps:
-      - name: Checkout the code 
-        uses: actions/checkout@v4
-        with:
-          node-version: ${{env.NODE_SERVICE}}
-      - name: Print Info
-        run: |
-          echo "Service: ${{env.SERVICE_NAME}}"
-          echo "Node-version: ${{env.NODE_SERVICE}}"
-          echo "Image: ${{env.IMAGE_NAME}}"
-          echo "Branch: ${{github.ref_name}}"
-          echo "Github Owner: ${{github.owner}}"
+#     steps:
+#       - name: Checkout the code 
+#         uses: actions/checkout@v4
+#         with:
+#           node-version: ${{env.NODE_SERVICE}}
+#       - name: Print Info
+#         run: |
+#           echo "Service: ${{env.SERVICE_NAME}}"
+#           echo "Node-version: ${{env.NODE_SERVICE}}"
+#           echo "Image: ${{env.IMAGE_NAME}}"
+#           echo "Branch: ${{github.ref_name}}"
+#           echo "Github Owner: ${{github.owner}}"
       
-      - name: Install dependencies
-        run: |
-          cd src/${{ env.SERVICE_NAME }}
-          npm install
-          npm install --save-dev jest
+#       - name: Install dependencies
+#         run: |
+#           cd src/${{ env.SERVICE_NAME }}
+#           npm install
+#           npm install --save-dev jest
       
-      - name: Run tests
-        run: |
-          cd src/${{ env.SERVICE_NAME }}
-          npm test
+#       - name: Run tests
+#         run: |
+#           cd src/${{ env.SERVICE_NAME }}
+#           npm test
       
-      - name: Build Docker (main branch only)
-        if: github.ref_name == 'main'
-        run: |
-          echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-          cd src/${{ env.SERVICE_NAME }}
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.SERVICE_NAME }}:latest .
+#       - name: Build Docker (main branch only)
+#         if: github.ref_name == 'main'
+#         run: |
+#           echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+#           cd src/${{ env.SERVICE_NAME }}
+#           docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.SERVICE_NAME }}:latest .
           
 
-      - name: Push Docker Image
-        run: |
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.SERVICE_NAME }}:latest
+#       - name: Push Docker Image
+#         run: |
+#           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.SERVICE_NAME }}:latest
          
 
          
