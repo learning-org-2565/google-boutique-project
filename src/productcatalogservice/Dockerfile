@@ -1,26 +1,41 @@
-# 1st iteration of Dcokerfile for the productcatalogservice
-# this is written with Go language so we need to build dockerfile for GO language
-# this is just first iteration of docker file 
+# we are going to build multi stage docker file
+# 3rd iteration of the dockerfile
 
-FROM golang:1.23-alpine
+# Basic image for 1st stage
+FROM golang:1.23-alpine AS builder
 
-# Now we set the working dir for  our app
-WORKDIR /app 
+# Create the working dir
+WORKDIR /app
 
-# Now we copy the go mod and sum file to download the dependencies and then we will copy the rest of the files
+# copy the dep, libraies to this dir
 COPY go.mod go.sum ./
 
-# Now we download the dependencies and install them
-RUN go mod download 
+# now donwload the packages
+RUN go mod download
 
-# now copy the rest of the files
-COPY . . 
+# now copy the source code
+COPY . .
 
-# Build the go application 
+# build the application 
 RUN go build -o server .
 
-# Expose the port that the app runs on 
-EXPOSE 3550
+# now see what are the files exist
+RUN ls -la app/server
 
-# Now the final stage , we will run the applciation 
-CMD ["./server"]
+# now we need to create the 2nd stage of the dockerfile
+FROM alpine:latest
+
+RUN apk add --no-cache ca-certificates
+
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+WORKDIR /app
+
+COPY --from=builder /app/server .
+
+COPY products.json .
+
+RUN chown -R appuser:appgroup /app
+USER appuser
+EXPOSE 3550
+CMD ["/app/server"]

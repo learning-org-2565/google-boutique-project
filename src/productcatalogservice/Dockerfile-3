@@ -1,0 +1,25 @@
+# this is the 2nd iteration of the dockerfile
+# we have to first build basic dockerfile then go for optimization
+# first we have to create the infra to store our source code
+FROM golang:1.23-alpine
+
+# Now we need to create the working dir it is act like a infra
+WORKDIR /app
+
+# now we need to copy the dep, libraries of the source code 
+COPY go.mod go.sum ./
+
+# we have added source code dep, libraries now we need to dowload those dep , packages into the working dir
+RUN go mod download
+
+# now copy the rest of the files
+COPY . .
+
+# now the most imp thing is download the go application
+RUN go build -o server .
+
+# now we need to expose the app to the port no which we will runs on this port 
+EXPOSE 3550
+
+# Now the final stage is to run the app 
+CMD ["./server"]

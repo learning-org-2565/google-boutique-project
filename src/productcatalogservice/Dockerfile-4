@@ -1,0 +1,33 @@
+# create 2nd iteration of the docker file which is optimizing the dockerfile
+FROM golang:1.23-alpine
+
+# now create the working dir
+WORKDIR /app
+
+# copy the dep, libraires of the source code
+COPY go.mod go.sum ./
+
+# now build the packages
+RUN go mod download
+
+# now copy the source code of the application
+# NOW WE have to copy only few files not all 
+# COPY *.go ./
+# COPY genproto/ ./genproto/
+# COPY products.json ./
+COPY . . 
+
+# build the application 
+RUN go build -o server .
+
+#  verify  critical files exist or not 
+RUN  ls -la server products.json 
+
+# make binary executable
+RUN chmod +x server
+
+# expose port
+EXPOSE 3550
+
+# RUN THE APP
+CMD ["app/server"]

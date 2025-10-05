@@ -1,32 +1,28 @@
-# Docker Compose v1 for productcatalogservice
-# Learning Focus: Go service orchestration, gRPC health checks
-
-# Docker Compose v1 - Simple Health Check Version
-# Learning Focus: Easy testing, simple health monitoring
-
-# Docker Compose v1 for productcatalogservice
-# Learning Focus: Go service orchestration, gRPC health checks
-
+# now we need to create docker compose file which will create the docker file and create container immidiately 
+# now we are creating this compose file for productcatalogservice 
+# first we have to give version 
 version: '3.8'
+# now we have to give service name it is act like a module 
 services:
+  # now we need to give service name which is going to be identify as how mnay containers we will create 
   productcatalogservice:
+    # now we need to build docker image as a productcatalogservice
     build: .
+    # we have to create the container name with this below one 
     container_name: productcatalog-composer
+    # now we have to expose the port for the container 
     ports:
-      - "3550:3550"  # gRPC port (discovered from analysis)
+      - "3550-3550"
     environment:
       - PORT=3550
-      - DISABLE_PROFILER=1        # From analysis: optional profiler
-      - ENABLE_TRACING=0          # From analysis: optional tracing
-      - PROJECT_ID=demo-project   # From analysis: GCP project
+      - DISABLE_PROFILER=1
+      - ENABLE_TRACING=0
+      - PROJECT_ID=demo-project
     healthcheck:
-      # gRPC health check (different from Node.js!)
+      #we have to check helath of the container
       test: ["CMD", "grpcurl", "-plaintext", "localhost:3550", "grpc.health.v1.Health/Check"]
       interval: 30s
       timeout: 10s
-      start_period: 20s           # Go services might take longer to start
+      start_period:  20s
       retries: 3
     restart: unless-stopped
-    # Optional: Volume for local development
-    # volumes:
-    #   - ./products.json:/app/products.json:ro
