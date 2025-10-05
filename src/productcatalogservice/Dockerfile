@@ -20,7 +20,9 @@ COPY . .
 RUN go build -o server .
 
 # now see what are the files exist
-RUN ls -la app/server
+# RUN ls -la app/server
+RUN ls -la /app/server
+
 
 # now we need to create the 2nd stage of the dockerfile
 FROM alpine:latest
